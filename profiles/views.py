@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from rest_framework.views import APIView
+from rest_framework.views import APIView 
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
@@ -11,8 +11,7 @@ from .models import UserProfile
 class HelloApiView(APIView):
     """ Test API View """
     serializer_class = ApiStartSerializer
-    class Meta:
-        pass
+    
     def get(self , request , format = None):
         an_apiview = [
             "Uses Http Method as function(get , post , patch , put , delete)"
@@ -26,8 +25,8 @@ class HelloApiView(APIView):
         serial =ApiStartSerializer(data = request.data)
 
         if serial.is_valid() :
-            name = serial.data.get("name")
-            message = 'Hello {0}'.format(name)
+            username = serial.data.get("username")
+            message = 'Hello %s'%format(username)
             return Response({
                 'message':message
             })

@@ -6,7 +6,7 @@ from rest_framework import serializers
 class UserProfilesSerializer(ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ('id' , 'email','name','is_staff','is_active')
+        fields = ('id' , 'email','name','password','is_staff','is_active')
 
         def create(self , request ):
             user = UserProfile(

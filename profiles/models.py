@@ -61,3 +61,13 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         """Django uses this when it needs to convert the object to text."""
         return self.email
+
+
+class Book(models.Model):
+    owner = models.ForeignKey(UserProfile)
+    name = models.CharField(max_length=55)
+    author = models.CharField(max_length=55)
+    describ = models.TextField()
+
+    def __str__(self):
+        return self.name

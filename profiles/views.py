@@ -5,8 +5,13 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.response import Response
-from .serializer import UserProfilesSerializer , ApiStartSerializer
-from .models import UserProfile
+from .serializer import UserProfilesSerializer , ApiStartSerializer , BookSerializer
+from .models import UserProfile , Book
+from rest_framework.authentication import TokenAuthentication
+from . import permissions
+from rest_framework import filters
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.authtoken.views import ObtainAuthToken
 
 class HelloApiView(APIView):
     """ Test API View """
@@ -48,8 +53,22 @@ class HelloApiView(APIView):
 
         return Response({"method" : 'delete'})
 
-class userProfileView(viewsets.ModelViewSet):
+class UserProfileView(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfilesSerializer
 
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.UpdateOwnProfile,)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name' , 'email')
 
+class BookView(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+class LoginViewset(viewsets.ViewSet):
+    
+    serializer_class = AuthTokenSerializer
+    
+    def create(self , request):
+        return ObtainAuthToken.post(request)

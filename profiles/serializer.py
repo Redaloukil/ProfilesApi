@@ -1,8 +1,21 @@
 from rest_framework.serializers import ModelSerializer
-from .models import UserProfile
+from .models import UserProfile , Book
 from rest_framework import serializers
 
+class BookSerializer(ModelSerializer):
+    class Meta:
+        model = Book
+        fields = ('id' , 'owner','name','author','describ',)
 
+        def create(self , request ):
+            book = Book(
+                owner = request.user["username"],
+                name = request["name"],
+                author = request["author"],
+                describ = request["describ"],
+            )
+            Book.save()
+            return book
 class UserProfilesSerializer(ModelSerializer):
     class Meta:
         model = UserProfile
